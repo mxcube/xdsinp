@@ -43,6 +43,13 @@ def get_xds_inp(dcid):
                                                        wildcard='?'*int(m.group('number')),
                                                        after=file_template[m.end('whole'):])
         res.dataCollection.fileTemplate = os.path.join(basedir, sanitized)
+        try:
+            sr_end = int((res.dataCollection.startImageNumber + res.dataCollection.numberOfImages - 1) / 2)
+            sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
+            add_sr = [sr_start, sr_end]
+            res.dataCollection.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
+        except Exception:
+            pass
 
 
     except IncompleteInformation, e:
