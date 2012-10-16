@@ -13,6 +13,10 @@
    BACKGROUND_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + datacollect.numberOfImages - 1}}
    SPOT_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + datacollect.numberOfImages - 1}}
 {%endif%}
+   ! additional spot range
+   {%if datacollect.additionalSpotRange is defined and datacollect.numberOfImages >= 90%}
+   SPOT_RANGE= {{datacollect.additionalSpotRange}}
+   {%endif%}
    
    SECONDS=60
    MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= 6
