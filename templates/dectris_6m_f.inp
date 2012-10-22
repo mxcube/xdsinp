@@ -73,7 +73,7 @@
 
    
    DETECTOR_DISTANCE= {{detector.detectorDistance}}
-   DETECTOR= {{detector.detectorType}}
+   DETECTOR= {{detector.detectorManufacturer}}
    !MINIMUM_VALID_PIXEL_VALUE= %d ! check if we have that on ispyb
    MINIMUM_VALID_PIXEL_VALUE= 1.0 ! check if we have that on ispyb
    OVERLOAD= 1048500
@@ -82,7 +82,7 @@
 
 
    SENSOR_THICKNESS=0.32
-   ORGX= {{datacollect.xbeam}}   ORGY= {{datacollect.ybeam}}
+   ORGX= {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} ORGY= {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
    ! check in ispyb
    !NX=  %d   NY=  %d
    QX= {{"%.4f"|format(detector.detectorPixelSizeHorizontal / 1000)}}  QY= {{"%.4f"|format(detector.detectorPixelSizeVertical / 1000)}}
