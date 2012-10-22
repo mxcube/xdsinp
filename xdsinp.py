@@ -55,7 +55,7 @@ def get_xds_inp(dcid):
     except IncompleteInformation, e:
         return 'Information missing in ISPyB: {0}'.format(e.message), 404
     else:
-        template_name = "{0}_{1}.inp".format(res.detector.detectorType.lower(), res.detector.detectorModel.lower())
+        template_name = "{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
         response = make_response(render_template(template_name, metadata=metadata,
                                                  datacollect=res.dataCollection,
                                                  detector=res.detector,
