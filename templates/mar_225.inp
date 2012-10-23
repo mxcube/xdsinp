@@ -33,7 +33,7 @@
    !TOTAL_SPINDLE_ROTATION_RANGES= 60 180 10 
    
    DETECTOR_DISTANCE= {{"%.2f"|format(datacollect.detectorDistance)}}
-   DETECTOR= {{detector.detectorManufacturer|upper}} MINIMUM_VALID_PIXEL_VALUE= 0   OVERLOAD= 65000
+   DETECTOR= CCDCHESS MINIMUM_VALID_PIXEL_VALUE= 0   OVERLOAD= 65000
    ORGX= {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} ORGY= {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
    NX=  3072   NY=  3072   QX= {{"%.4f"|format(detector.detectorPixelSizeHorizontal)}} QY= {{"%.4f"|format(detector.detectorPixelSizeVertical)}}
    VALUE_RANGE_FOR_TRUSTED_DETECTOR_PIXELS= 7000 30000
