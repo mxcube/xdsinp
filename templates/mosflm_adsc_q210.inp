@@ -1,0 +1,29 @@
+# generated from ispyb on {{metadata.timestamp}}
+# webservice call took {{metadata.webservice_request_time}}
+  # Detector type: ADSC Quantum Q210
+  # User comments: Not yet in ispyb
+
+  #  Basic definitions
+   scanner ADSC
+   gain 0.4
+   synchrotron polar 0.99
+   dispersion  0.0002
+   divergence  0.001 0.001
+   genf genfile.gen
+
+  #  Better have them
+   wavelength  {{"%.6f"|format(datacollect.wavelength)}}
+   distance    {{"%.2f"|format(datacollect.detectorDistance)}}
+   beam   {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
+
+  #  Just a guess
+   mosaic  0.5
+
+  #  Files
+   directory       {{datacollect.imageDirectory}}
+   template   {{datacollect.imageDirectory}}
+   extension  {{datacollect.imageSuffix}}
+   image {{datacollect.startImageNumber}} phi {{datacollect.axisStart}} to {{datacollect.axisEnd}}
+   BEST ON
+   wait 60
+   go
