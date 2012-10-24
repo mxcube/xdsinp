@@ -63,5 +63,37 @@ def get_xds_inp(dcid):
     response.headers['Content-Type'] = 'text/plain'
     return response
 
+@app.route('/mosflm.inp/<int:dcid>')
+def get_mosflm_inp(dcid):
+    t0=time.time()
+    c = suds.client.Client(WSDL_URL)
+    res = c.service.getXDSInfo(dcid)
+    reqtime = time.time()-t0
+    gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
+    basedir = request.args.get("basedir", "../links")
+
+    metadata = dict()
+    metadata['webservice_request_time'] = reqtime
+    metadata['timestamp'] = gentime
+
+    file_template=res.dataCollection.fileTemplate
+    res.dataCollection.fileTemplate = file_template_to_xds(file_template)
+    try:
+        sr_end = int((res.dataCollection.startImageNumber + res.dataCollection.numberOfImages - 1) / 2)
+        sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
+        add_sr = [sr_start, sr_end]
+        res.dataCollection.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
+    except Exception:
+        pass
+
+    template_name = "mosflm_{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
+    response = make_response(render_template(template_name, metadata=metadata,
+                                             datacollect=res.dataCollection,
+                                             detector=res.detector,
+                                             blsetup=res.beamlineSetup))
+    response.headers['Content-Type'] = 'text/plain'
+    return response
+
+
 if __name__=='__main__':
     app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
