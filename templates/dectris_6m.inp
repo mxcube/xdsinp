@@ -60,7 +60,7 @@
 
    SENSOR_THICKNESS=0.32
    ORGX= {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} ORGY= {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
-   NX= 2527 NY= 2463
+   NX= 2463 NY= 2527
    QX= {{"%.4f"|format(detector.detectorPixelSizeHorizontal)}}  QY= {{"%.4f"|format(detector.detectorPixelSizeVertical)}}
    VALUE_RANGE_FOR_TRUSTED_DETECTOR_PIXELS= 7000 30000
    
