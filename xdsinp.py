@@ -24,7 +24,7 @@ def file_template_to_xds(filename):
     # assume there can be only one occurence of the %d format
     # directive. Perhaps there is a more elegant way of doing
     # this.
-    m = re.match('.+(?P<whole>%(?P<number>[0-9]+)d).*', file_template)
+    m = re.match('.+(?P<whole>%(?P<number>[0-9]+)d).*', filename)
     converted = '{before}{wildcard}{after}'.format(before=file_template[0:m.start('whole')],
                                                    wildcard='?'*int(m.group('number')),
                                                    after=file_template[m.end('whole'):])
