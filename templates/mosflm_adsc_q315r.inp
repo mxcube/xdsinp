@@ -20,8 +20,8 @@
    mosaic  0.5
 
   #  Files
-   directory       {{datacollect.imageDirectory}}
-   template   {{datacollect.imageDirectory}}
+   directory  {{datacollect.imageDirectory}}
+   template   {{datacollect.fileTemplate}}
    extension  {{datacollect.imageSuffix}}
    image {{datacollect.startImageNumber}} phi {{datacollect.axisStart}} to {{datacollect.axisEnd}}
    BEST ON
