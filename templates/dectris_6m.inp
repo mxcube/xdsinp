@@ -3,28 +3,15 @@
 
    JOB= ALL !XYCORR INIT COLSPOT IDXREF DEFPIX XPLAN INTEGRATE CORRECT
    !JOB= DEFPIX XPLAN INTEGRATE CORRECT
-
-!### i would add also a !JOB= CORRECT
-
-   
    DATA_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + datacollect.numberOfImages - 1}}
-
-!### this is given by _INPUTS["frame_first"], _DP_INPUTS["frame_first"]+3,\ 
-!### replaced by something like "first frame", (1/oscillation_range)*4
-
    {%if datacollect.numberOfImages >= 20 %}
-   SPOT_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + 3/datacollect.axisRange}}
+   SPOT_RANGE= {{datacollect.startImageNumber}} {{"%d"|format(datacollect.startImageNumber + 3/datacollect.axisRange)}}
    {%else%}
    SPOT_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + datacollect.numberOfImages - 1}}
    {%endif%}
-
    {%if datacollect.additionalSpotRange is defined and datacollect.numberOfImages >= 90%}
    SPOT_RANGE= {{datacollect.additionalSpotRange}}
    {%endif%}
-!### this need to be uncommented
-!### and be replaced by something like
-!### last_image/2 - (1/oscillation_range)*4, last_image/2
-
    {%if datacollect.numberOfImages >= 4 %}
    BACKGROUND_RANGE= {{datacollect.startImageNumber}} {{datacollect.startImageNumber + 3}}
    {%else%}
@@ -56,11 +43,9 @@
    SECONDS=600
    MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= 4
 
-!### can be 3 for pilatus
-
    !STRONG_PIXEL= 3.0
    
-   OSCILLATION_RANGE= {{datacollect.oscillationRange}}
+   OSCILLATION_RANGE= {{datacollect.axisRange}}
    STARTING_ANGLE= {{datacollect.axisStart}}
    STARTING_FRAME= {{datacollect.startImageNumber}}
    X-RAY_WAVELENGTH=  {{datacollect.wavelength}}
@@ -69,23 +54,16 @@
    !STARTING_ANGLES_OF_SPINDLE_ROTATION= 0 180 10 
    !TOTAL_SPINDLE_ROTATION_RANGES= 60 180 10 
 
-!### as we are using default we can remove this, what do you think?
-
-   
-   DETECTOR_DISTANCE= {{detector.detectorDistance}}
-   DETECTOR= {{detector.detectorManufacturer}}
-   !MINIMUM_VALID_PIXEL_VALUE= %d ! check if we have that on ispyb
-   MINIMUM_VALID_PIXEL_VALUE= 1.0 ! check if we have that on ispyb
+   DETECTOR_DISTANCE= {{"%.2f"|format(datacollect.detectorDistance)}}
+   DETECTOR= PILATUS
+   MINIMUM_VALID_PIXEL_VALUE= 1.0
    OVERLOAD= 1048500
-
-!### overload is really not necessary, is more for user education
 
 
    SENSOR_THICKNESS=0.32
    ORGX= {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} ORGY= {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
-   ! check in ispyb
-   !NX=  %d   NY=  %d
-   QX= {{"%.4f"|format(detector.detectorPixelSizeHorizontal}}  QY= {{"%.4f"|format(detector.detectorPixelSizeVertical)}}
+   NX= 2527 NY= 2463
+   QX= {{"%.4f"|format(detector.detectorPixelSizeHorizontal)}}  QY= {{"%.4f"|format(detector.detectorPixelSizeVertical)}}
    VALUE_RANGE_FOR_TRUSTED_DETECTOR_PIXELS= 7000 30000
    
    DIRECTION_OF_DETECTOR_X-AXIS= 1.0 0.0 0.0
@@ -94,7 +72,6 @@
    INCIDENT_BEAM_DIRECTION= 0.0 0.0 1.0
    FRACTION_OF_POLARIZATION= {{"%.2f" | format(blsetup.polarisation)}}
    POLARIZATION_PLANE_NORMAL= 0.0 1.0 0.0
-   !== Default value recommended
    !AIR= %.8f
    
    SPACE_GROUP_NUMBER= 0
