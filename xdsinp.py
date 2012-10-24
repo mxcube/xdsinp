@@ -18,6 +18,12 @@ class IncompleteInformation(Exception):
     pass
 
 def file_template_to_xds(filename):
+    # ispyb has the file template in python's old format string
+    # format, XDS only has '?' wildcards. This converts stuff like
+    # xqm2-grt36-03w1_1_%04d.img to xqm2-grt36-03w1_1_????.img. We
+    # assume there can be only one occurence of the %d format
+    # directive. Perhaps there is a more elegant way of doing
+    # this.
     m = re.match('.+(?P<whole>%(?P<number>[0-9]+)d).*', file_template)
     converted = '{before}{wildcard}{after}'.format(before=file_template[0:m.start('whole')],
                                                    wildcard='?'*int(m.group('number')),
@@ -38,12 +44,6 @@ def get_xds_inp(dcid):
     metadata['webservice_request_time'] = reqtime
     metadata['timestamp'] = gentime
 
-    # ispyb has the file template in python's old format string
-    # format, XDS only has '?' wildcards. This converts stuff like
-    # xqm2-grt36-03w1_1_%04d.img to xqm2-grt36-03w1_1_????.img. We
-    # assume there can be only one occurence of the %d format
-    # directive. Perhaps there is a more elegant way of doing
-    # this.
     file_template=res.dataCollection.fileTemplate
     converted = file_template_to_xds(file_template)
     res.dataCollection.fileTemplate = os.path.join(basedir, converted)
