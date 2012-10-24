@@ -25,9 +25,9 @@ def file_template_to_xds(filename):
     # directive. Perhaps there is a more elegant way of doing
     # this.
     m = re.match('.+(?P<whole>%(?P<number>[0-9]+)d).*', filename)
-    converted = '{before}{wildcard}{after}'.format(before=file_template[0:m.start('whole')],
+    converted = '{before}{wildcard}{after}'.format(before=filename[0:m.start('whole')],
                                                    wildcard='?'*int(m.group('number')),
-                                                   after=file_template[m.end('whole'):])
+                                                   after=filename[m.end('whole'):])
     return converted
 
 @app.route('/xds.inp/<int:dcid>')
