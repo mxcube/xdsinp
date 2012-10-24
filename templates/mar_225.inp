@@ -23,7 +23,7 @@
    MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= 6
    STRONG_PIXEL= 6.0
    
-   OSCILLATION_RANGE= {{datacollect.axisRange}}
+   OSCILLATION_RANGE= {{"%.4f"|format(datacollect.axisRange)}}
    STARTING_ANGLE= {{datacollect.axisStart}}
    STARTING_FRAME= {{datacollect.startImageNumber}}
    X-RAY_WAVELENGTH= {{"%.5f"|format(datacollect.wavelength)}}

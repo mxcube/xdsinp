@@ -45,10 +45,10 @@
 
    !STRONG_PIXEL= 3.0
    
-   OSCILLATION_RANGE= {{datacollect.axisRange}}
+   OSCILLATION_RANGE= {{"%.4f"|format(datacollect.axisRange)}}
    STARTING_ANGLE= {{datacollect.axisStart}}
    STARTING_FRAME= {{datacollect.startImageNumber}}
-   X-RAY_WAVELENGTH=  {{datacollect.wavelength}}
+   X-RAY_WAVELENGTH=  {{"%.5f"|format(datacollect.wavelength)}}
    NAME_TEMPLATE_OF_DATA_FRAMES= {{datacollect.fileTemplate}} !CBF
    
    !STARTING_ANGLES_OF_SPINDLE_ROTATION= 0 180 10 
