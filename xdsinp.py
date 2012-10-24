@@ -55,7 +55,7 @@ def get_xds_inp(dcid):
     except Exception:
         pass
 
-    template_name = "{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
+    template_name = "xds_{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
     response = make_response(render_template(template_name, metadata=metadata,
                                              datacollect=res.dataCollection,
                                              detector=res.detector,
