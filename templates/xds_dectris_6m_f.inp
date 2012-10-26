@@ -37,8 +37,8 @@
    TRUSTED_REGION=0.0 1.41 !Relative radii limiting trusted detector region
    
    !correction tables to compensate the misorientations of the modules
-   X-GEO_CORR= ../x_geo_corr.cbf
-   Y-GEO_CORR= ../y_geo_corr.cbf
+   X-GEO_CORR= /data/id29/inhouse/opid291/x_geo_corr.cbf
+   Y-GEO_CORR= /data/id29/inhouse/opid291/y_geo_corr.cbf
    
    SECONDS=600
    MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= 3
