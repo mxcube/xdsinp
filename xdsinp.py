@@ -8,6 +8,7 @@ import suds
 import re
 
 WSDL_URL='http://pyprocz.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
+REQUEST_TIMEOUT=3
 #WSDL_URL='http://160.103.210.4:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 
 app = Flask(__name__)
@@ -33,7 +34,7 @@ def file_template_to_xds(filename):
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
     t0=time.time()
-    c = suds.client.Client(WSDL_URL)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
     res = c.service.getXDSInfo(dcid)
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
