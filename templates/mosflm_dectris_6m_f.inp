@@ -5,10 +5,9 @@
 
   #  Basic definitions
    scanner PILATUS
-   gain 0.4
    synchrotron polar 0.99
    dispersion  0.0002
-   divergence  0.001 0.001
+   divergence  0.090 0.003
    genf genfile.gen
 
   #  Better have them
