@@ -95,6 +95,14 @@ def get_mosflm_inp(dcid):
     response.headers['Content-Type'] = 'text/plain'
     return response
 
+@app.route('/stac.descr/<int:dcid>')
+def get_stac_descr(dcid):
+    c = suds.client.Client(WSDL_URL)
+    res = c.service.getXDSInfo(dcid)
+    response = make_response(render_template('stac.descr', datacollect=res.dataCollection))
+    response.headers['Content-Type'] = 'text/plain'
+    return response
+
 
 if __name__=='__main__':
     app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
