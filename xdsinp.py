@@ -39,11 +39,12 @@ def get_xds_inp(dcid):
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
-
+    raw_data = request.args.get("basedir") is not None
 
     metadata = dict()
     metadata['webservice_request_time'] = reqtime
     metadata['timestamp'] = gentime
+    metadata['raw_data'] = raw_data
 
     file_template=res.dataCollection.fileTemplate
     converted = file_template_to_xds(file_template)
