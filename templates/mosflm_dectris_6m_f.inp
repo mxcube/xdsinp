@@ -13,7 +13,7 @@
   #  Better have them
    wavelength  {{"%.6f"|format(datacollect.wavelength)}}
    distance    {{"%.2f"|format(datacollect.detectorDistance)}}
-   beam   {{"%.2f"|format(datacollect.ybeam / detector.detectorPixelSizeVertical)}} {{"%.2f"|format(datacollect.xbeam / detector.detectorPixelSizeHorizontal)}}
+   beam   {{"%.2f"|format(datacollect.xbeam)}} {{"%.2f"|format(datacollect.ybeam)}}
 
   #  Just a guess
    mosaic  0.5
