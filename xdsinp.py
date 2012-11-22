@@ -18,7 +18,7 @@ print os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
 class IncompleteInformation(Exception):
     pass
 
-def file_template_to_xds(filename):
+def file_template_to_xds(filename, wildcard_char='?'):
     # ispyb has the file template in python's old format string
     # format, XDS only has '?' wildcards. This converts stuff like
     # xqm2-grt36-03w1_1_%04d.img to xqm2-grt36-03w1_1_????.img. We
@@ -27,7 +27,7 @@ def file_template_to_xds(filename):
     # this.
     m = re.match('.+(?P<whole>%(?P<number>[0-9]+)d).*', filename)
     converted = '{before}{wildcard}{after}'.format(before=filename[0:m.start('whole')],
-                                                   wildcard='?'*int(m.group('number')),
+                                                   wildcard=wildcard_char*int(m.group('number')),
                                                    after=filename[m.end('whole'):])
     return converted
 
@@ -79,7 +79,7 @@ def get_mosflm_inp(dcid):
     metadata['timestamp'] = gentime
 
     file_template=res.dataCollection.fileTemplate
-    res.dataCollection.fileTemplate = file_template_to_xds(file_template)
+    res.dataCollection.fileTemplate = file_template_to_xds(file_template, wildcard_char='#')
     try:
         sr_end = int((res.dataCollection.startImageNumber + res.dataCollection.numberOfImages - 1) / 2)
         sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
