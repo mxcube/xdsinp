@@ -1,7 +1,7 @@
 #STAC OM descriptor (by Sandor Brockhauser)
 #==========================================
-OMFILENAME  {{omfilename}}
-OMTYPE      {{omtype}}
+OMFILENAME  {omfilename}
+OMTYPE      {omtype}
 phi         {{"%.4f"|format(datacollect.axisStart)}}
 r_kap1      {{"%.4f"|format(datacollect.kappaStart)}}
 r_kap2      {{"%.4f"|format(datacollect.phiStart)}}
