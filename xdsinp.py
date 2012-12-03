@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
+import os
 import os.path
 from jinja2 import FileSystemLoader
 from flask import Flask, render_template, make_response, abort, request
@@ -100,7 +101,12 @@ def get_mosflm_inp(dcid):
 def get_stac_descr(dcid):
     c = suds.client.Client(WSDL_URL)
     res = c.service.getXDSInfo(dcid)
-    response = make_response(render_template('stac.descr', datacollect=res.dataCollection))
+    blname = os.environ.get('BEAMLINENAME')
+    if blname is not None:
+        templ = 'stac.descr.{0}'.format(blname)
+    else:
+        templ = 'stac.descr'
+    response = make_response(render_template(templ, datacollect=res.dataCollection))
     response.headers['Content-Type'] = 'text/plain'
     return response
 
