@@ -75,8 +75,7 @@ def get_xds_inp(dcid):
 def get_mosflm_inp(dcid):
     app.logger.debug('Generating mosflm.inp for ID {0}'.format(dcid))
     t0=time.time()
-    c = suds.client.Client(WSDL_URL)
-    res = c.service.getXDSInfo(dcid)
+    res = g.getXDSInfo(dcid)
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
@@ -106,8 +105,7 @@ def get_mosflm_inp(dcid):
 @app.route('/stac.descr/<int:dcid>')
 def get_stac_descr(dcid):
     app.logger.debug('Generating stac.descr for ID {0}'.format(dcid))
-    c = suds.client.Client(WSDL_URL)
-    res = c.service.getXDSInfo(dcid)
+    res = g.getXDSInfo(dcid)
     blname = os.environ.get('BEAMLINENAME')
     if blname is not None:
         templ = 'stac.descr.{0}'.format(blname)
