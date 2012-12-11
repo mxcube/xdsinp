@@ -7,6 +7,8 @@ from jinja2 import FileSystemLoader
 from flask import Flask, render_template, make_response, abort, request, g
 import suds
 import re
+import logging
+from logging.handlers import RotatingFileHandler
 
 WSDL_URL='http://pyprocz.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 REQUEST_TIMEOUT=3
@@ -36,6 +38,7 @@ def before_request():
 
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
+    app.logger.debug('Generating XDS.INP for ID {0}'.format(dcid))
     t0=time.time()
 
     res = g.getXDSInfo(dcid)
@@ -70,6 +73,7 @@ def get_xds_inp(dcid):
 
 @app.route('/mosflm.inp/<int:dcid>')
 def get_mosflm_inp(dcid):
+    app.logger.debug('Generating mosflm.inp for ID {0}'.format(dcid))
     t0=time.time()
     c = suds.client.Client(WSDL_URL)
     res = c.service.getXDSInfo(dcid)
@@ -101,6 +105,7 @@ def get_mosflm_inp(dcid):
 
 @app.route('/stac.descr/<int:dcid>')
 def get_stac_descr(dcid):
+    app.logger.debug('Generating stac.descr for ID {0}'.format(dcid))
     c = suds.client.Client(WSDL_URL)
     res = c.service.getXDSInfo(dcid)
     blname = os.environ.get('BEAMLINENAME')
@@ -114,4 +119,19 @@ def get_stac_descr(dcid):
 
 
 if __name__=='__main__':
+    # setup the logfile
+    my_dir = os.path.dirname(os.path.abspath(__file__))
+    confpath = os.path.join(my_dir, 'logpath')
+    if os.path.exists(confpath):
+        with open(confpath) as f:
+            logpath = os.path.expanduser(f.readline().strip())
+        if os.path.isdir(logpath):
+            handler = RotatingFileHandler(os.path.join(logpath, 'xdsinp.log'),
+                                          backupCount=10,
+                                          maxBytes=2048)
+            fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            handler.setFormatter(fmt)
+            handler.setLevel(logging.DEBUG)
+            app.logger.setLevel(logging.DEBUG)
+            app.logger.addHandler(handler)
     app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
