@@ -10,14 +10,11 @@ import re
 
 WSDL_URL='http://pyprocz.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 REQUEST_TIMEOUT=3
-#WSDL_URL='http://160.103.210.4:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 
 app = Flask(__name__)
 app.jinja_loader = FileSystemLoader([os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")])
 print os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
 
-class IncompleteInformation(Exception):
-    pass
 
 def file_template_to_xds(filename, wildcard_char='?'):
     # ispyb has the file template in python's old format string
