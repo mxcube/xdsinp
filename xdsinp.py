@@ -48,26 +48,23 @@ def get_xds_inp(dcid):
     raw_data = request.args.get("basedir") is not None
 
     metadata = dict()
-    metadata['webservice_request_time'] = reqtime
-    metadata['timestamp'] = gentime
-    metadata['raw_data'] = raw_data
+    res.webservice_request_time = reqtime
+    res.timestamp = gentime
+    res.raw_data = raw_data
 
-    file_template=res.dataCollection.fileTemplate
+    file_template=res.fileTemplate
     converted = file_template_to_xds(file_template)
-    res.dataCollection.fileTemplate = os.path.join(basedir, converted)
+    res.fileTemplate = os.path.join(basedir, converted)
     try:
-        sr_end = int((res.dataCollection.startImageNumber + res.dataCollection.numberOfImages - 1) / 2)
+        sr_end = int((res.startImageNumber + res.numberOfImages - 1) / 2)
         sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
         add_sr = [sr_start, sr_end]
-        res.dataCollection.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
+        res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
         pass
 
-    template_name = "xds_{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
-    response = make_response(render_template(template_name, metadata=metadata,
-                                             datacollect=res.dataCollection,
-                                             detector=res.detector,
-                                             blsetup=res.beamlineSetup))
+    template_name = "xds_{0}_{1}.inp".format(res.detectorManufacturer.lower(), res.detectorModel.lower())
+    response = make_response(render_template(template_name, data=res))
     response.headers['Content-Type'] = 'text/plain'
     return response
 
@@ -80,25 +77,21 @@ def get_mosflm_inp(dcid):
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
 
-    metadata = dict()
-    metadata['webservice_request_time'] = reqtime
-    metadata['timestamp'] = gentime
+    res.webservice_request_time = reqtime
+    res.timestamp = gentime
 
-    file_template=res.dataCollection.fileTemplate
-    res.dataCollection.fileTemplate = file_template_to_xds(file_template, wildcard_char='#')
+    file_template = res.fileTemplate
+    res.fileTemplate = file_template_to_xds(file_template, wildcard_char='#')
     try:
-        sr_end = int((res.dataCollection.startImageNumber + res.dataCollection.numberOfImages - 1) / 2)
-        sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
+        sr_end = int((res.startImageNumber + res.numberOfImages - 1) / 2)
+        sr_start = sr_end - int(3.0/res.axisRange)
         add_sr = [sr_start, sr_end]
-        res.dataCollection.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
+        res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
         pass
 
-    template_name = "mosflm_{0}_{1}.inp".format(res.detector.detectorManufacturer.lower(), res.detector.detectorModel.lower())
-    response = make_response(render_template(template_name, metadata=metadata,
-                                             datacollect=res.dataCollection,
-                                             detector=res.detector,
-                                             blsetup=res.beamlineSetup))
+    template_name = "mosflm_{0}_{1}.inp".format(res.detectorManufacturer.lower(), res.detectorModel.lower())
+    response = make_response(render_template(template_name, data=res))
     response.headers['Content-Type'] = 'text/plain'
     return response
 
@@ -111,7 +104,7 @@ def get_stac_descr(dcid):
         templ = 'stac.descr.{0}'.format(blname)
     else:
         templ = 'stac.descr'
-    response = make_response(render_template(templ, datacollect=res.dataCollection))
+    response = make_response(render_template(templ, data=res))
     response.headers['Content-Type'] = 'text/plain'
     return response
 
