@@ -4,7 +4,7 @@ import time
 import os
 import os.path
 from jinja2 import FileSystemLoader
-from flask import Flask, render_template, make_response, abort, request
+from flask import Flask, render_template, make_response, abort, request, g
 import suds
 import re
 
@@ -29,11 +29,16 @@ def file_template_to_xds(filename, wildcard_char='?'):
                                                    after=filename[m.end('whole'):])
     return converted
 
+@app.before_request
+def before_request():
+    if not hasattr(g, 'getXDSInfo'):
+        g.getXDSInfo = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT).service.getXDSInfo
+
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
     t0=time.time()
-    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
-    res = c.service.getXDSInfo(dcid)
+
+    res = g.getXDSInfo(dcid)
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
