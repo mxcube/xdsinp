@@ -10,7 +10,7 @@ import re
 import logging
 from logging.handlers import RotatingFileHandler
 
-WSDL_URL='http://pyprocz.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
+WSDL_URL='http://160.103.210.124:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 REQUEST_TIMEOUT=3
 
 app = Flask(__name__)
