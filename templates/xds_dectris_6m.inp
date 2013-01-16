@@ -37,7 +37,7 @@
    TRUSTED_REGION=0.0 1.41 !Relative radii limiting trusted detector region
    
    !correction tables to compensate the misorientations of the modules
-{%if metadata['raw_data']%}
+{%if data.raw_data%}
    X-GEO_CORR= ../x_geo_corr.cbf
    Y-GEO_CORR= ../y_geo_corr.cbf
 {%else%}
