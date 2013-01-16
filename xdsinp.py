@@ -64,7 +64,7 @@ def get_xds_inp(dcid):
         pass
 
     template_name = "xds_{0}_{1}.inp".format(res.detectorManufacturer.lower(), res.detectorModel.lower())
-    response = make_response(render_template(template_name, data=res))
+    response = make_response(render_template(template_name, data=res, metadata=metadata))
     response.headers['Content-Type'] = 'text/plain'
     return response
 
