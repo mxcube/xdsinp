@@ -1,6 +1,5 @@
 ! ispyb web service request time: {{"%.2f"|format(data.webservice_request_time)}}s
 ! generated {{data.timestamp}}
-! X-Ray data collected at: ESRF_ID23-1
    
    JOB= ALL !XYCORR INIT COLSPOT IDXREF DEFPIX XPLAN INTEGRATE CORRECT
    !JOB= DEFPIX XPLAN INTEGRATE CORRECT
