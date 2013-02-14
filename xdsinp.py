@@ -56,7 +56,7 @@ def get_xds_inp(dcid):
     res.fileTemplate = os.path.join(basedir, converted)
     try:
         sr_end = int((res.startImageNumber + res.numberOfImages - 1) / 2)
-        sr_start = sr_end - int(3.0/res.dataCollection.axisRange)
+        sr_start = sr_end - int(3.0/res.axisRange)
         add_sr = [sr_start, sr_end]
         res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
