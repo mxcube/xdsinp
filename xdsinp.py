@@ -31,20 +31,14 @@ def file_template_to_xds(filename, wildcard_char='?'):
                                                    after=filename[m.end('whole'):])
     return converted
 
-@app.before_request
-def before_request():
-    if not hasattr(g, 'getXDSInfo'):
-        client = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
-        client.set_options(cache=None)
-        g.getXDSInfo = client.service.getXDSInfo
-
-
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
     app.logger.debug('Generating XDS.INP for ID {0}'.format(dcid))
     t0=time.time()
 
-    res = g.getXDSInfo(dcid)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    res = c.service.getXDSInfo(dcid)
+
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
@@ -74,7 +68,10 @@ def get_xds_inp(dcid):
 def get_mosflm_inp(dcid):
     app.logger.debug('Generating mosflm.inp for ID {0}'.format(dcid))
     t0=time.time()
-    res = g.getXDSInfo(dcid)
+
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    res = c.service.getXDSInfo(dcid)
+
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
     basedir = request.args.get("basedir", "../links")
@@ -100,7 +97,10 @@ def get_mosflm_inp(dcid):
 @app.route('/stac.descr/<int:dcid>')
 def get_stac_descr(dcid):
     app.logger.debug('Generating stac.descr for ID {0}'.format(dcid))
-    res = g.getXDSInfo(dcid)
+
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    res = c.service.getXDSInfo(dcid)
+
     blname = os.environ.get('BEAMLINENAME')
     if blname is not None:
         templ = 'stac.descr.{0}'.format(blname)
