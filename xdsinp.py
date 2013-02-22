@@ -34,7 +34,10 @@ def file_template_to_xds(filename, wildcard_char='?'):
 @app.before_request
 def before_request():
     if not hasattr(g, 'getXDSInfo'):
-        g.getXDSInfo = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT).service.getXDSInfo
+        client = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+        client.set_options(cache=None)
+        g.getXDSInfo = client.service.getXDSInfo
+
 
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
