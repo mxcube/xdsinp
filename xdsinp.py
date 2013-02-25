@@ -127,4 +127,4 @@ if __name__=='__main__':
             handler.setLevel(logging.DEBUG)
             app.logger.setLevel(logging.DEBUG)
             app.logger.addHandler(handler)
-    app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
+    app.run(host='0.0.0.0', port=int(sys.argv[1]))
