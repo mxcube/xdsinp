@@ -41,10 +41,12 @@ def get_xds_inp(dcid):
 
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
+    request_basedir = request.args.get("basedir")
     basedir = request.args.get("basedir", "../links")
     raw_data = request.args.get("basedir") is not None
 
-    res.basedir=basedir
+    res.basedir = basedir
+    res.request_basedir = request_basedir
     res.webservice_request_time = reqtime
     res.timestamp = gentime
     res.raw_data = raw_data
