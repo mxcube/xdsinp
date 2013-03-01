@@ -1,5 +1,6 @@
 ! ispyb web service request time: {{"%.2f"|format(data.webservice_request_time)}}s
 ! generated {{data.timestamp}}
+! params: raw_data={{data.raw_data}}, basedir={{data.basedir}}
 
    JOB= ALL !XYCORR INIT COLSPOT IDXREF DEFPIX XPLAN INTEGRATE CORRECT
    !JOB= DEFPIX XPLAN INTEGRATE CORRECT
