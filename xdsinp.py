@@ -114,6 +114,30 @@ def get_stac_descr(dcid):
     return response
 
 
+@app.route('/def.site/<int:dcid>')
+def get_def_site(dcid):
+    app.logger.debug('Generating def.site for ID {0}'.format(dcid))
+    t0=time.time()
+
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    res = c.service.getXDSInfo(dcid)
+
+    reqtime = time.time()-t0
+    gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
+
+    res.webservice_request_time = reqtime
+    res.timestamp = gentime
+
+    blname = os.environ.get('BEAMLINENAME')
+    if blname is not None:
+        template_name = 'def.site.{0}'.format(blname)
+    else:
+        template_name = 'def.site'
+    response = make_response(render_template(template_name, data=res))
+    response.headers['Content-Type'] = 'text/plain'
+    return response
+
+
 if __name__=='__main__':
     # setup the logfile
     my_dir = os.path.dirname(os.path.abspath(__file__))
