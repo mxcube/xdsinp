@@ -22,7 +22,7 @@
    directory  {{data.imageDirectory}}
    template   {{data.fileTemplate}}
    extension  {{data.imageSuffix}}
-   image {{data.startImageNumber}} phi {{data.axisStart}} to {{data.axisEnd}}
+   image {{data.startImageNumber}}
    BEST ON
    wait 60
    go
