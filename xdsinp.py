@@ -10,6 +10,30 @@ import re
 import logging
 from logging.handlers import RotatingFileHandler
 
+try:
+    import config
+except ImportError:
+    print 'Could not import configuration'
+
+try:
+    WS_URL = config.WS_URL
+except (NameError, AttributeError):
+    print 'No webservice URL in config, cannot continue'
+    sys.exit(1)
+
+ISPYB_USER = None
+ISPYB_PASSWORD = None
+try:
+    ISPYB_USER = config.ISPYB_USER
+    ISPYB_PASSWORD = config.ISPYB_PASSWORD
+except (NameError, AttributeError):
+    print 'No ispyb user, continuing without auth'
+
+if ISPYB_PASSWORD is not None and ISPYB_USER is not None:
+    SUDS_CLIENT_OPTS = {'username': ISPYB_USER, 'password': ISPYB_PASSWORD}
+else:
+    SUDS_CLIENT_OPTS = {}
+
 WSDL_URL='http://160.103.210.124:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
 REQUEST_TIMEOUT=3
 
@@ -36,7 +60,7 @@ def get_xds_inp(dcid):
     app.logger.debug('Generating XDS.INP for ID {0}'.format(dcid))
     t0=time.time()
 
-    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
 
     reqtime = time.time()-t0
@@ -72,7 +96,7 @@ def get_mosflm_inp(dcid):
     app.logger.debug('Generating mosflm.inp for ID {0}'.format(dcid))
     t0=time.time()
 
-    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
 
     reqtime = time.time()-t0
@@ -101,7 +125,7 @@ def get_mosflm_inp(dcid):
 def get_stac_descr(dcid):
     app.logger.debug('Generating stac.descr for ID {0}'.format(dcid))
 
-    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
 
     blname = os.environ.get('BEAMLINENAME')
@@ -119,7 +143,7 @@ def get_def_site(dcid):
     app.logger.debug('Generating def.site for ID {0}'.format(dcid))
     t0=time.time()
 
-    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT)
+    c = suds.client.Client(WSDL_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
 
     reqtime = time.time()-t0
