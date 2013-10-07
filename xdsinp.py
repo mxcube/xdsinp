@@ -154,7 +154,7 @@ def get_def_site(dcid):
     res.timestamp = gentime
 
     hostname = socket.gethostname()
-    if blname is not None:
+    if hostname is not None:
         template_name = 'def.site.{0}'.format(hostname)
     else:
         template_name = 'def.site'
