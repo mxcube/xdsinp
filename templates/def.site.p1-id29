@@ -1,4 +1,4 @@
-HKLSuite0.95SITE
+{% raw %}HKLSuite0.95SITE
 {2theta,direction} {1}
 {2theta,exists} {1}
 {CCD} {1}
@@ -127,11 +127,11 @@ HKLSuite0.95SITE
 {systematic_error,unit_cell,angles} {0.0}
 {systematic_error,unit_cell,length} {0.0}
 {wavelength} {1.00000}
-{xbeam} {212.00}
+{% endraw %}{xbeam} { {{"%.2f"|format(data.xbeam)}} }
 {xsize_mm} {424}
 {xsize_pixel} {2463}
 {y_scale} {0}
-{ybeam} {217.51}
+{ybeam} { {{"%.2f"|format(data.ybeam)}} }
 {yscale} {1.0}
 {yscale,use} {0}
 {ysize_pixel} {2527}
