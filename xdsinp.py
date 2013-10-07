@@ -151,9 +151,9 @@ def get_def_site(dcid):
     res.webservice_request_time = reqtime
     res.timestamp = gentime
 
-    blname = os.environ.get('BEAMLINENAME')
+    hostname = socket.gethostname()
     if blname is not None:
-        template_name = 'def.site.{0}'.format(blname)
+        template_name = 'def.site.{0}'.format(hostname)
     else:
         template_name = 'def.site'
     response = make_response(render_template(template_name, data=res))
