@@ -6,7 +6,7 @@
    !JOB= DEFPIX XPLAN INTEGRATE CORRECT
    DATA_RANGE= {{data.startImageNumber}} {{data.startImageNumber + data.numberOfImages - 1}}
    {%if data.numberOfImages >= 20 %}
-   SPOT_RANGE= {{data.startImageNumber}} {{"%d"|format(data.startImageNumber + 3/data.axisRange)}}
+   SPOT_RANGE= {{data.startImageNumber}} {{"%d"|format(data.startImageNumber + 5/data.axisRange)}}
    {%else%}
    SPOT_RANGE= {{data.startImageNumber}} {{data.startImageNumber + data.numberOfImages - 1}}
    {%endif%}
