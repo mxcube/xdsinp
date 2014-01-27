@@ -5,6 +5,7 @@ import os
 import os.path
 import socket
 import re
+from math import ceil
 import logging
 from logging.handlers import RotatingFileHandler
 from jinja2 import FileSystemLoader
@@ -56,6 +57,48 @@ def file_template_to_xds(filename, wildcard_char='?'):
                                                    after=filename[m.end('whole'):])
     return converted
 
+
+# helper function to calculate ranges
+def calculate_spot_range(startimg, numimages, axisrange, degrees, middle=None):
+    """Calculate spot ranges, one at the beginning and one at the end,
+    plus an optional one in the middle, covering a given range.
+    :param startimg: The start image number
+    :param numimages: The number of images
+    :param axisrange: The axis range
+    :param degrees: How many degrees to cover
+    :param middle: If not None, include a range in the middle"""
+
+    # TODO: Some tests are missing (like overlapping ranges)
+
+    res = []
+    last_image = startimg + numimages - 1
+    img_in_range = int(degrees / axisrange) - 1
+    # Special case if we have few images: use the whole range
+    if numimages < 20:
+        return "{0} {1}".format(startimg, last_image)
+
+    # first 5 degrees
+    range_end = startimg + img_in_range
+    # just in case
+    if range_end > last_image:
+        range_end = last_image
+    res.append("{0} {1}".format(startimg, range_end))
+
+    # optional middle range
+    if middle is not None:
+        middle_start = int(ceil(numimages / 2))
+        middle_end = middle_start + img_in_range
+        if middle_end > last_image:
+            middle_end = last_image
+        res.append("{0} {1}".format(middle_start, middle_end))
+
+    # end range
+    end_start = last_image - img_in_range - 1
+    res.append("{0} {1}".format(end_start, last_image))
+
+    return res
+
+
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
     app.logger.debug('Generating XDS.INP for ID {0}'.format(dcid))
@@ -86,6 +129,19 @@ def get_xds_inp(dcid):
         res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
         pass
+
+    try:
+        # The new spot ranges, for 5 and 10 degrees
+        res.spotRange5 = calculate_spot_range(res.startImageNumber,
+                                              res.numberOfImages,
+                                              res.axisRange,
+                                              5,
+                                              middle=True)
+        res.spotRange10 = calculate_spot_range(res.startImageNumber,
+                                              res.numberOfImages,
+                                              res.axisRange,
+                                              10,
+                                              middle=True)
 
     template_name = "xds_{0}_{1}.inp".format(res.detectorManufacturer.lower(), res.detectorModel.lower())
     response = make_response(render_template(template_name, data=res))
