@@ -142,6 +142,9 @@ def get_xds_inp(dcid):
                                               res.axisRange,
                                               10,
                                               middle=True)
+    except Exception:
+        logging.exception("calculating the spot ranges failed")
+
 
     template_name = "xds_{0}_{1}.inp".format(res.detectorManufacturer.lower(), res.detectorModel.lower())
     response = make_response(render_template(template_name, data=res))
