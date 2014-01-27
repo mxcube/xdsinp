@@ -5,14 +5,9 @@
    JOB= ALL !XYCORR INIT COLSPOT IDXREF DEFPIX XPLAN INTEGRATE CORRECT
    !JOB= DEFPIX XPLAN INTEGRATE CORRECT
    DATA_RANGE= {{data.startImageNumber}} {{data.startImageNumber + data.numberOfImages - 1}}
-   {%if data.numberOfImages >= 20 %}
-   SPOT_RANGE= {{data.startImageNumber}} {{"%d"|format(data.startImageNumber + 10/data.axisRange)}}
-   {%else%}
-   SPOT_RANGE= {{data.startImageNumber}} {{data.startImageNumber + data.numberOfImages - 1}}
-   {%endif%}
-   {%if data.additionalSpotRange is defined and data.numberOfImages >= 90%}
-   SPOT_RANGE= {{data.additionalSpotRange}}
-   {%endif%}
+   {% for spotrange in data.spotRange10 %}
+   SPOT_RANGE= {{ spotrange }}
+   {% endfor %}
    {%if data.numberOfImages >= 4 %}
    BACKGROUND_RANGE= {{data.startImageNumber}} {{data.startImageNumber + 3}}
    {%else%}
@@ -87,4 +82,3 @@
 
    SEPMIN= 3
    CLUSTER_RADIUS= 1
-
