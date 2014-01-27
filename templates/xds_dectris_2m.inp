@@ -53,7 +53,7 @@
    DETECTOR=PILATUS         MINIMUM_VALID_PIXEL_VALUE=0  OVERLOAD=1048500
 
 
-   SENSOR_THICKNESS=0.32
+   SENSOR_THICKNESS=0.45
    ORGX= {{"%.2f"|format(data.ybeam / data.detectorPixelSizeVertical)}} ORGY= {{"%.2f"|format(data.xbeam / data.detectorPixelSizeHorizontal)}}
    NX=1475   NY=1679
    QX= {{"%.4f"|format(data.detectorPixelSizeHorizontal)}}  QY= {{"%.4f"|format(data.detectorPixelSizeVertical)}}
@@ -82,3 +82,4 @@
 
    SEPMIN= 3
    CLUSTER_RADIUS= 1
+
