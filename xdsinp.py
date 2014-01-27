@@ -37,7 +37,7 @@ if ISPYB_PASSWORD is not None and ISPYB_USER is not None:
 else:
     SUDS_CLIENT_OPTS = {}
 
-REQUEST_TIMEOUT=3
+REQUEST_TIMEOUT = 3
 
 app = Flask(__name__)
 app.jinja_loader = FileSystemLoader([os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")])
@@ -102,7 +102,7 @@ def calculate_spot_range(startimg, numimages, axisrange, degrees, middle=None):
 @app.route('/xds.inp/<int:dcid>')
 def get_xds_inp(dcid):
     app.logger.debug('Generating XDS.INP for ID {0}'.format(dcid))
-    t0=time.time()
+    t0 = time.time()
 
     c = suds.client.Client(WS_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
@@ -119,13 +119,12 @@ def get_xds_inp(dcid):
     res.timestamp = gentime
     res.raw_data = raw_data
 
-    file_template=res.fileTemplate
+    file_template = res.fileTemplate
     converted = file_template_to_xds(file_template)
     res.fileTemplate = os.path.join(basedir, converted)
     try:
         sr_end = int((res.startImageNumber + res.numberOfImages - 1) / 2)
         sr_start = sr_end - int(3.0/res.axisRange)
-        add_sr = [sr_start, sr_end]
         res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
         pass
@@ -154,14 +153,13 @@ def get_xds_inp(dcid):
 @app.route('/mosflm.inp/<int:dcid>')
 def get_mosflm_inp(dcid):
     app.logger.debug('Generating mosflm.inp for ID {0}'.format(dcid))
-    t0=time.time()
+    t0 = time.time()
 
     c = suds.client.Client(WS_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
 
     reqtime = time.time()-t0
     gentime = time.strftime("%a, %d %b %Y %H:%M:%S")
-    basedir = request.args.get("basedir", "../links")
 
     res.webservice_request_time = reqtime
     res.timestamp = gentime
@@ -171,7 +169,6 @@ def get_mosflm_inp(dcid):
     try:
         sr_end = int((res.startImageNumber + res.numberOfImages - 1) / 2)
         sr_start = sr_end - int(3.0/res.axisRange)
-        add_sr = [sr_start, sr_end]
         res.additionalSpotRange = "{0} {1}".format(sr_start, sr_end)
     except Exception:
         pass
@@ -201,7 +198,7 @@ def get_stac_descr(dcid):
 @app.route('/def.site/<int:dcid>')
 def get_def_site(dcid):
     app.logger.debug('Generating def.site for ID {0}'.format(dcid))
-    t0=time.time()
+    t0 = time.time()
 
     c = suds.client.Client(WS_URL, timeout=REQUEST_TIMEOUT, **SUDS_CLIENT_OPTS)
     res = c.service.getXDSInfo(dcid)
