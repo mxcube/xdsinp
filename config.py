@@ -6,3 +6,6 @@ WS_URL=""
 ISPYB_USER=""
 # ...and password
 ISPYB_PASSWORD=""
+
+# Where to log stuff
+# LOG_DIR='some/path'
