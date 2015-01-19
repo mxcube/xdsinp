@@ -219,7 +219,7 @@ def get_def_site(dcid):
     return response
 
 
-if __name__=='__main__':
+def serve_forever():
     # setup the logfile
     my_dir = os.path.dirname(os.path.abspath(__file__))
     confpath = os.path.join(my_dir, 'logpath')
@@ -236,3 +236,6 @@ if __name__=='__main__':
             app.logger.setLevel(logging.DEBUG)
             app.logger.addHandler(handler)
     app.run(host='0.0.0.0', port=int(sys.argv[1]))
+
+if __name__ == '__main__':
+    serve_forever()
