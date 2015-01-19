@@ -220,14 +220,19 @@ def get_def_site(dcid):
 
 
 if __name__=='__main__':
-    if hasattr(config, 'LOG_DIR'):
-        logdir = os.path.expanduser(config.LOG_DIR)
-        handler = RotatingFileHandler(os.path.join(logdir, 'xdsinp.log'),
-                                      backupCount=10,
-                                      maxBytes=2048)
-        fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        handler.setFormatter(fmt)
-        handler.setLevel(logging.DEBUG)
-        app.logger.setLevel(logging.DEBUG)
-        app.logger.addHandler(handler)
+    # setup the logfile
+    my_dir = os.path.dirname(os.path.abspath(__file__))
+    confpath = os.path.join(my_dir, 'logpath')
+    if os.path.exists(confpath):
+        with open(confpath) as f:
+            logpath = os.path.expanduser(f.readline().strip())
+        if os.path.isdir(logpath):
+            handler = RotatingFileHandler(os.path.join(logpath, 'xdsinp.log'),
+                                          backupCount=10,
+                                          maxBytes=2048)
+            fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            handler.setFormatter(fmt)
+            handler.setLevel(logging.DEBUG)
+            app.logger.setLevel(logging.DEBUG)
+            app.logger.addHandler(handler)
     app.run(host='0.0.0.0', port=int(sys.argv[1]))
