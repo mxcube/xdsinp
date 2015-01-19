@@ -1,4 +1,3 @@
 # to avoid committing passwords and stuff
-config.py
 build
 __pycache__
